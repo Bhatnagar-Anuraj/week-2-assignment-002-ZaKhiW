@@ -39,56 +39,54 @@ COMMENT HABITS (practice these throughout the course):
 
 import maya.cmds as cmds
 
-# Clear the scene.
 cmds.file(new=True, force=True)
 
-
 def generate_pattern():
-    """Generate a procedural pattern of objects using nested loops.
+    num_rows = 5
+    num_cols = 5
+    spacing = 3.0
 
-    This function should:
-        1. Define variables for rows, columns, and spacing.
-        2. Use a nested for-loop to iterate over rows and columns.
-        3. Inside the loop, use a conditional to vary object properties.
-        4. Create and position each object.
-    """
-    # --- Configuration variables ---
-    num_rows = 5        # Number of rows in the pattern.
-    num_cols = 5        # Number of columns in the pattern.
-    spacing = 3.0       # Distance between object centers.
+    for row in range(num_rows):
+        for col in range(num_cols):
+            x_pos = col * spacing
+            z_pos = row * spacing
 
-    # TODO: Create a nested loop that iterates over rows and columns.
-    #
-    # HINT -- your loop structure should look something like this:
-    #
-    #   for row in range(num_rows):
-    #       for col in range(num_cols):
-    #           # Calculate position
-    #           x_pos = col * spacing
-    #           z_pos = row * spacing
-    #
-    #           # TODO: Add a conditional here that changes something
-    #           # based on row, col, or (row + col).
-    #           # For example:
-    #           #   if (row + col) % 2 == 0:
-    #           #       create a cube
-    #           #   else:
-    #           #       create a sphere
-    #
-    #           # TODO: Create the object using cmds.polyCube(), etc.
-    #
-    #           # TODO: Position the object using cmds.move().
-    #
-    #           # TODO: (Optional) Vary the scale using cmds.scale().
+            # Create cone or sphere pattern
+            if (row + col) % 4 == 0:
+                obj = cmds.polyCone(name="cone", radius=1.0, height=2.0)[0]
+            else:
+                obj = cmds.polySphere(name="sphere", radius=1.0)[0]
 
-    pass  # Remove this line once you add your code.
+            cmds.move(x_pos, 0, z_pos, obj)
 
+    # Create floating orb
+    orb_height = 9.0
+    orb = cmds.polySphere(name="orb", radius=2.0)[0]
 
-# ---------------------------------------------------------------------------
-# Run the generator
-# ---------------------------------------------------------------------------
+    cmds.move(0, orb_height / 2.0, 0, orb)
+
+    actual_height = cmds.getAttr(orb + ".scaleY") * orb_height
+    print("Orb height:", actual_height)
+
+    if actual_height > 9.0:
+        print("This orb is TALL (over 9 units).")
+    else:
+        print("This orb is SHORT (9 units or under).")
+
+    cmds.move(3, 6, 0, orb)
+
+    orb_x = cmds.getAttr(orb + ".translateX")
+    orb_y = cmds.getAttr(orb + ".translateY")
+
+    if orb_x > 0 and orb_y > 10:
+        print("Orb is in the upper-right area of the scene.")
+
+    if orb_x > 10 or orb_y > 10:
+        print("Orb is far from the origin on at least one axis.")
+    else:
+        print("Orb is reasonably close to the origin.")
+
 generate_pattern()
 
-# Frame everything in the viewport.
 cmds.viewFit(allObjects=True)
 print("Pattern generated successfully!")
