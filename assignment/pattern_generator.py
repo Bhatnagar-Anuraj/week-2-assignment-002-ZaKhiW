@@ -51,15 +51,14 @@ def generate_pattern():
             x_pos = col * spacing
             z_pos = row * spacing
 
-            # Create cone or sphere pattern
+         
             if (row + col) % 4 == 0:
                 obj = cmds.polyCone(name="cone", radius=1.0, height=2.0)[0]
             else:
                 obj = cmds.polySphere(name="sphere", radius=1.0)[0]
 
             cmds.move(x_pos, 0, z_pos, obj)
-
-    # Create floating orb
+            
     orb_height = 9.0
     orb = cmds.polySphere(name="orb", radius=2.0)[0]
 
