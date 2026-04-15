@@ -36,7 +36,7 @@ COMMENT HABITS (practice these throughout the course):
     - Use inline comments sparingly and only when the code is not obvious.
     - Keep comments up to date -- if you change the code, update the comment.
 """
-
+ 
 import maya.cmds as cmds
 
 cmds.file(new=True, force=True)
